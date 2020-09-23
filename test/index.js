@@ -1,7 +1,7 @@
 var fs = require('fs')
 var path = require('path')
 var test = require('tape')
-var micromark = require('micromark/lib')
+var micromark = require('micromark')
 var syntax = require('../syntax')
 var html = require('../html')
 
