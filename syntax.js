@@ -1,3 +1,7 @@
+var markdownLineEndingOrSpace = require('micromark/dist/character/markdown-line-ending-or-space')
+var spaceFactory = require('micromark/dist/tokenize/factory-space')
+var prefixSize = require('micromark/dist/util/prefix-size')
+
 var tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
 exports.text = {91: tasklistCheck}
@@ -54,18 +58,23 @@ function tokenizeTasklistCheck(effects, ok, nok) {
       effects.consume(code)
       effects.exit('taskListCheckMarker')
       effects.exit('taskListCheck')
-      return after
+      return effects.check({tokenize: spaceThenNonSpace}, ok, nok)
     }
 
     return nok(code)
   }
+}
+
+function spaceThenNonSpace(effects, ok, nok) {
+  var self = this
+
+  return spaceFactory(effects, after, 'whitespace')
 
   function after(code) {
-    // Tab or space.
-    if (code === -2 || code === 32) {
-      return ok(code)
-    }
-
-    return nok(code)
+    return prefixSize(self.events, 'whitespace') &&
+      code !== null &&
+      !markdownLineEndingOrSpace(code)
+      ? ok(code)
+      : nok(code)
   }
 }

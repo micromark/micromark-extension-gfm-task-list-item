@@ -1,12 +1,13 @@
 var fs = require('fs')
 var path = require('path')
 var test = require('tape')
+var controls = require('control-pictures')
 var micromark = require('micromark')
 var syntax = require('../syntax')
 var html = require('../html')
 
-var input = fs.readFileSync(path.join(__dirname, 'input.md'))
-var output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf8')
+var input = controls(fs.readFileSync(path.join(__dirname, 'input.md')))
+var output = String(fs.readFileSync(path.join(__dirname, 'output.html')))
 
 test('markdown -> html (micromark)', function (t) {
   t.deepEqual(

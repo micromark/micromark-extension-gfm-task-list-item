@@ -31,9 +31,10 @@
     "html.js",
     "syntax.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "micromark": "~2.10.0"
+  },
   "devDependencies": {
-    "micromark": "~2.10.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "remark-cli": "^8.0.0",

@@ -50,7 +50,24 @@ Empty?
 
 + [ ]
 
-* [ ]	Tab after
+Space after:
+
++ [ ]␠
+
+* [ ]␠Text.
+
+Tab after:
+
++ [ ]␉
+
+* [ ]␉Text.
+
+EOL after:
+
++ [ ]
+
+* [ ]
+  Text.
 
 -
   [ ] after blank?
