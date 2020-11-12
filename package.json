@@ -35,6 +35,7 @@
     "micromark": "~2.10.0"
   },
   "devDependencies": {
+    "control-pictures": "^1.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "remark-cli": "^9.0.0",
