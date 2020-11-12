@@ -71,9 +71,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/micromark/micromark-extension-gfm-task-list-item.svg
+[build-badge]: https://github.com/micromark/micromark-extension-gfm-task-list-item/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/micromark/micromark-extension-gfm-task-list-item
+[build]: https://github.com/micromark/micromark-extension-gfm-task-list-item/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark-extension-gfm-task-list-item.svg
 
