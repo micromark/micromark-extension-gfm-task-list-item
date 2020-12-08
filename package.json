@@ -32,7 +32,7 @@
     "syntax.js"
   ],
   "dependencies": {
-    "micromark": "~2.10.0"
+    "micromark": "~2.11.0"
   },
   "devDependencies": {
     "control-pictures": "^1.0.0",
