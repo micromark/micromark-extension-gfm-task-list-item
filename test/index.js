@@ -8,10 +8,10 @@ import {
   gfmTaskListItemHtml as html
 } from '../dev/index.js'
 
-var input = controlPictures(fs.readFileSync(path.join('test', 'input.md')))
-var output = String(fs.readFileSync(path.join('test', 'output.html')))
+const input = controlPictures(fs.readFileSync(path.join('test', 'input.md')))
+const output = String(fs.readFileSync(path.join('test', 'output.html')))
 
-test('markdown -> html (micromark)', function (t) {
+test('markdown -> html (micromark)', (t) => {
   t.deepEqual(
     micromark(input, {extensions: [syntax], htmlExtensions: [html]}),
     output,

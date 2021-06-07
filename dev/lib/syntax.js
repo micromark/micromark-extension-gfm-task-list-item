@@ -7,14 +7,14 @@ import {
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
 
-var tasklistCheck = {tokenize: tokenizeTasklistCheck}
+const tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
 export const gfmTaskListItem = {
   text: {[codes.leftSquareBracket]: tasklistCheck}
 }
 
 function tokenizeTasklistCheck(effects, ok, nok) {
-  var self = this
+  const self = this
 
   return open
 
@@ -70,7 +70,7 @@ function tokenizeTasklistCheck(effects, ok, nok) {
 }
 
 function spaceThenNonSpace(effects, ok, nok) {
-  var self = this
+  const self = this
 
   return factorySpace(effects, after, types.whitespace)
 
