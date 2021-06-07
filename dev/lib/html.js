@@ -1,3 +1,8 @@
+/**
+ * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
+ */
+
+/** @type {HtmlExtension} */
 export const gfmTaskListItemHtml = {
   enter: {
     taskListCheck() {

@@ -8,7 +8,9 @@ import {
   gfmTaskListItemHtml as html
 } from '../dev/index.js'
 
-const input = controlPictures(fs.readFileSync(path.join('test', 'input.md')))
+const input = controlPictures(
+  String(fs.readFileSync(path.join('test', 'input.md')))
+)
 const output = String(fs.readFileSync(path.join('test', 'output.html')))
 
 test('markdown -> html (micromark)', (t) => {
