@@ -8,17 +8,16 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**[micromark][]** extension to support GitHub flavored markdown [task list
+**[micromark][]** extension to support GitHub flavored markdown (GFM) [task list
 items][].
 This extension matches the GFM spec for the few things it defines and otherwise
 matches github.com.
 
-This package provides the low-level modules for integrating with the micromark
-tokenizer and the micromark HTML compiler.
+## When to use this
 
-You probably shouldn’t use this package directly, but instead use
-[`mdast-util-gfm-task-list-item`][mdast-util-gfm-task-list-item] with
-**[mdast][]**.
+You should probably use [`micromark-extension-gfm`][micromark-extension-gfm]
+instead, which combines this package with other GFM features.
+Alternatively, if you don’t want all of GFM, use this package.
 
 ## Install
 
@@ -31,29 +30,65 @@ Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
 npm install micromark-extension-gfm-task-list-item
 ```
 
+## Use
+
+```js
+import {micromark} from 'micromark'
+import {
+  gfmTaskListItem,
+  gfmTaskListItemHtml
+} from 'micromark-extension-gfm-task-list-item'
+
+const output = micromark('* [x] a\n* [ ] b', {
+  extensions: [gfmTaskListItem],
+  htmlExtensions: [gfmTaskListItemHtml]
+})
+
+console.log(output)
+```
+
+Yields:
+
+```html
+<ul>
+<li><input checked="" disabled="" type="checkbox"> a</li>
+<li><input disabled="" type="checkbox"> b</li>
+</ul>
+```
+
 ## API
 
 This package exports the following identifiers: `gfmTaskListItem`,
 `gfmTaskListItemHtml`.
 There is no default export.
 
+The export map supports the endorsed
+[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
+Run `node --conditions development module.js` to get instrumented dev code.
+Without this condition, production code is loaded.
+
 ### `gfmTaskListItem`
 
 ### `gfmTaskListItemHtml`
 
 Support [task list items][].
-The exports are extensions for the micromark parser (to tokenize checks; can be
-passed in `extensions`) and the default HTML compiler (to compile as `<input>`
-elements; can be passed in `htmlExtensions`).
+An extension for micromark to parse checks (can be passed in `extensions`) and
+one to compile as `<input>` elements (can be passed in `htmlExtensions`).
 
 ## Related
 
 *   [`remarkjs/remark`][remark]
     — markdown processor powered by plugins
+*   [`remarkjs/remark-gfm`](https://github.com/remarkjs/remark-gfm)
+    — remark plugin using this and other GFM features
 *   [`micromark/micromark`][micromark]
     — the smallest commonmark-compliant markdown parser that exists
+*   [`micromark/micromark-extension-gfm`][micromark-extension-gfm]
+    — micromark extension combining this with other GFM features
 *   [`syntax-tree/mdast-util-gfm-task-list-item`](https://github.com/syntax-tree/mdast-util-gfm-task-list-item)
     — mdast utility to support task lists
+*   [`syntax-tree/mdast-util-gfm`](https://github.com/syntax-tree/mdast-util-gfm)
+    — mdast utility to support GFM
 *   [`syntax-tree/mdast-util-from-markdown`][from-markdown]
     — mdast parser using `micromark` to create mdast from markdown
 *   [`syntax-tree/mdast-util-to-markdown`][to-markdown]
@@ -121,8 +156,6 @@ abide by its terms.
 
 [remark]: https://github.com/remarkjs/remark
 
-[mdast]: https://github.com/syntax-tree/mdast
-
-[mdast-util-gfm-task-list-item]: https://github.com/syntax-tree/mdast-util-gfm-task-list-item
-
 [task list items]: https://github.github.com/gfm/#task-list-items-extension-
+
+[micromark-extension-gfm]: https://github.com/micromark/micromark-extension-gfm
