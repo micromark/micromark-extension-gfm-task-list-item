@@ -6,7 +6,7 @@ import {micromark} from 'micromark'
 import {
   gfmTaskListItem as syntax,
   gfmTaskListItemHtml as html
-} from '../index.js'
+} from '../dev/index.js'
 
 var input = controlPictures(fs.readFileSync(path.join('test', 'input.md')))
 var output = String(fs.readFileSync(path.join('test', 'output.html')))

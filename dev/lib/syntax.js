@@ -1,10 +1,16 @@
-import {markdownLineEndingOrSpace} from 'micromark-util-character'
+import assert from 'assert'
 import {factorySpace} from 'micromark-factory-space'
+import {
+  markdownSpace,
+  markdownLineEndingOrSpace
+} from 'micromark-util-character'
+import {codes} from 'micromark-util-symbol/codes.js'
+import {types} from 'micromark-util-symbol/types.js'
 
 var tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
 export const gfmTaskListItem = {
-  text: {91: tasklistCheck}
+  text: {[codes.leftSquareBracket]: tasklistCheck}
 }
 
 function tokenizeTasklistCheck(effects, ok, nok) {
@@ -13,11 +19,11 @@ function tokenizeTasklistCheck(effects, ok, nok) {
   return open
 
   function open(code) {
+    assert(code === codes.leftSquareBracket, 'expected `[`')
+
     if (
-      // Exit if not `[`.
-      code !== 91 ||
       // Exit if there’s stuff before.
-      self.previous !== null ||
+      self.previous !== codes.eof ||
       // Exit if not in the first content that is the first child of a list
       // item.
       !self._gfmTasklistFirstContentOfListItem
@@ -33,16 +39,14 @@ function tokenizeTasklistCheck(effects, ok, nok) {
   }
 
   function inside(code) {
-    // Tab or space.
-    if (code === -2 || code === 32) {
+    if (markdownSpace(code)) {
       effects.enter('taskListCheckValueUnchecked')
       effects.consume(code)
       effects.exit('taskListCheckValueUnchecked')
       return close
     }
 
-    // Upper- and lower `x`.
-    if (code === 88 || code === 120) {
+    if (code === codes.uppercaseX || code === codes.lowercaseX) {
       effects.enter('taskListCheckValueChecked')
       effects.consume(code)
       effects.exit('taskListCheckValueChecked')
@@ -53,8 +57,7 @@ function tokenizeTasklistCheck(effects, ok, nok) {
   }
 
   function close(code) {
-    // `]`
-    if (code === 93) {
+    if (code === codes.rightSquareBracket) {
       effects.enter('taskListCheckMarker')
       effects.consume(code)
       effects.exit('taskListCheckMarker')
@@ -69,14 +72,14 @@ function tokenizeTasklistCheck(effects, ok, nok) {
 function spaceThenNonSpace(effects, ok, nok) {
   var self = this
 
-  return factorySpace(effects, after, 'whitespace')
+  return factorySpace(effects, after, types.whitespace)
 
   function after(code) {
     const tail = self.events[self.events.length - 1]
 
     return tail &&
-      tail[1].type === 'whitespace' &&
-      code !== null &&
+      tail[1].type === types.whitespace &&
+      code !== codes.eof &&
       !markdownLineEndingOrSpace(code)
       ? ok(code)
       : nok(code)
