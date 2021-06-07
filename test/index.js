@@ -1,13 +1,15 @@
-var fs = require('fs')
-var path = require('path')
-var test = require('tape')
-var controls = require('control-pictures')
-var micromark = require('micromark')
-var syntax = require('../syntax.js')
-var html = require('../html.js')
+import fs from 'fs'
+import path from 'path'
+import test from 'tape'
+import {controlPictures} from 'control-pictures'
+import {micromark} from 'micromark'
+import {
+  gfmTaskListItem as syntax,
+  gfmTaskListItemHtml as html
+} from '../index.js'
 
-var input = controls(fs.readFileSync(path.join(__dirname, 'input.md')))
-var output = String(fs.readFileSync(path.join(__dirname, 'output.html')))
+var input = controlPictures(fs.readFileSync(path.join('test', 'input.md')))
+var output = String(fs.readFileSync(path.join('test', 'output.html')))
 
 test('markdown -> html (micromark)', function (t) {
   t.deepEqual(

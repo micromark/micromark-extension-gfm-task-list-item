@@ -22,6 +22,9 @@ You probably shouldn’t use this package directly, but instead use
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -30,12 +33,13 @@ npm install micromark-extension-gfm-task-list-item
 
 ## API
 
-### `html`
+This package exports the following identifiers: `gfmTaskListItem`,
+`gfmTaskListItemHtml`.
+There is no default export.
 
-### `syntax`
+### `gfmTaskListItem`
 
-> Note: `syntax` is the default export of this module, `html` is available at
-> `micromark-extension-gfm-task-list-item/html`.
+### `gfmTaskListItemHtml`
 
 Support [task list items][].
 The exports are extensions for the micromark parser (to tokenize checks; can be
