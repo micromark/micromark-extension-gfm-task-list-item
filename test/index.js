@@ -20,5 +20,17 @@ test('markdown -> html (micromark)', (t) => {
     'should support task list items just like how github.com does it'
   )
 
+  t.deepEqual(
+    micromark('*\n    [x]', {extensions: [syntax], htmlExtensions: [html]}),
+    '<ul>\n<li>[x]</li>\n</ul>',
+    'should not support laziness (1)'
+  )
+
+  t.deepEqual(
+    micromark('*\n[x]', {extensions: [syntax], htmlExtensions: [html]}),
+    '<ul>\n<li></li>\n</ul>\n<p>[x]</p>',
+    'should not support laziness (2)'
+  )
+
   t.end()
 })
