@@ -8,7 +8,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import assert from 'assert'
+import assert from 'node:assert'
 import {factorySpace} from 'micromark-factory-space'
 import {
   markdownSpace,
