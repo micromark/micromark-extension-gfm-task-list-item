@@ -11,8 +11,8 @@
 import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {
-  markdownSpace,
-  markdownLineEndingOrSpace
+  markdownLineEndingOrSpace,
+  markdownLineEnding
 } from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
@@ -52,7 +52,9 @@ function tokenizeTasklistCheck(effects, ok, nok) {
 
   /** @type {State} */
   function inside(code) {
-    if (markdownSpace(code)) {
+    // To match how GH works in comments, use `markdownSpace` (`[ \t]`) instead
+    // of `markdownLineEndingOrSpace` (`[ \t\r\n]`).
+    if (markdownLineEndingOrSpace(code)) {
       effects.enter('taskListCheckValueUnchecked')
       effects.consume(code)
       effects.exit('taskListCheckValueUnchecked')
@@ -93,11 +95,16 @@ function spaceThenNonSpace(effects, ok, nok) {
   function after(code) {
     const tail = self.events[self.events.length - 1]
 
-    return tail &&
-      tail[1].type === types.whitespace &&
-      code !== codes.eof &&
-      !markdownLineEndingOrSpace(code)
-      ? ok(code)
-      : nok(code)
+    return (
+      // We either found spaces…
+      ((tail && tail[1].type === types.whitespace) ||
+        // …or it was followed by a line ending, in which case, there has to be
+        // non-whitespace after that line ending, because otherwise we’d get an
+        // EOF as the content is closed with blank lines.
+        markdownLineEnding(code)) &&
+        code !== codes.eof
+        ? ok(code)
+        : nok(code)
+    )
   }
 }

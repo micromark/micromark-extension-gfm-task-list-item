@@ -6,12 +6,12 @@
 export const gfmTaskListItemHtml = {
   enter: {
     taskListCheck() {
-      this.tag('<input ')
+      this.tag('<input type="checkbox" disabled="" ')
     }
   },
   exit: {
     taskListCheck() {
-      this.tag('disabled="" type="checkbox">')
+      this.tag('/>')
     },
     taskListCheckValueChecked() {
       this.tag('checked="" ')
