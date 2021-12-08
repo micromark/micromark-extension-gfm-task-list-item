@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-**[micromark][]** extension to support GitHub Flavored Markdown (GFM) [task list
+**[micromark][]** extension to support GitHub flavored markdown (GFM) [task list
 items][].
 
 ## Contents

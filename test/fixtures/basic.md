@@ -10,6 +10,8 @@
 
 * [x] Checked?
 
++ [y] What is this even?
+
 - [n]: #
   [ ] After a definition
 
@@ -23,9 +25,6 @@
 - [	] With a tab
 
 + [X] With an upper case `x`
-
-* [
-  ] With a line feed
 
 + [
 ] In a lazy line
