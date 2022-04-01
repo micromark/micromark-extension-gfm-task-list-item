@@ -55,17 +55,17 @@ In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 npm install micromark-extension-gfm-task-list-item
 ```
 
-In Deno with [Skypack][]:
+In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://cdn.skypack.dev/micromark-extension-gfm-task-list-item@1?dts'
+import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@1'
 ```
 
-In browsers with [Skypack][]:
+In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://cdn.skypack.dev/micromark-extension-gfm-task-list-item@1?min'
+  import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@1?bundle'
 </script>
 ```
 
@@ -183,7 +183,7 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[skypack]: https://www.skypack.dev
+[esmsh]: https://esm.sh
 
 [license]: license
 
