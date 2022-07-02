@@ -1,11 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').Previous} Previous
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Event} Event
- * @typedef {import('micromark-util-types').Code} Code
  */
 
 import {ok as assert} from 'uvu/assert'
@@ -19,6 +15,11 @@ import {types} from 'micromark-util-symbol/types.js'
 
 const tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
+/**
+ * Syntax extension for micromark (passed in `extensions`).
+ *
+ * @type {Extension}
+ */
 export const gfmTaskListItem = {
   text: {[codes.leftSquareBracket]: tasklistCheck}
 }
