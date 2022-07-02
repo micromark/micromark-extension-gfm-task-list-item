@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[micromark][] extension support GFM [task list items][].
+[micromark][] extension to support GFM [task list items][].
 
 ## Contents
 
