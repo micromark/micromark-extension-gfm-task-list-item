@@ -2,8 +2,11 @@
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  */
 
+// To do: next major: expose function to make extension.
+
 /**
- * HTML extension for micromark (passed in `htmlExtensions`).
+ * Extension for `micromark` that can be passed in `htmlExtensions` to
+ * support GFM task list items when serializing to HTML.
  *
  * @type {HtmlExtension}
  */

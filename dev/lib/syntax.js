@@ -16,8 +16,11 @@ import {types} from 'micromark-util-symbol/types.js'
 
 const tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
+// To do: next major: expose function to make extension.
+
 /**
- * Syntax extension for micromark (passed in `extensions`).
+ * Extension for `micromark` that can be passed in `extensions`, to
+ * enable GFM task list items syntax.
  *
  * @type {Extension}
  */
@@ -57,6 +60,7 @@ function tokenizeTasklistCheck(effects, ok, nok) {
 
   /** @type {State} */
   function inside(code) {
+    // Currently we match how GH works in files.
     // To match how GH works in comments, use `markdownSpace` (`[ \t]`) instead
     // of `markdownLineEndingOrSpace` (`[ \t\r\n]`).
     if (markdownLineEndingOrSpace(code)) {
