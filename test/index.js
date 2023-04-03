@@ -4,7 +4,18 @@ import test from 'node:test'
 import {micromark} from 'micromark'
 import {createGfmFixtures} from 'create-gfm-fixtures'
 import {controlPictures} from 'control-pictures'
-import {gfmTaskListItem, gfmTaskListItemHtml} from '../dev/index.js'
+import {
+  gfmTaskListItem,
+  gfmTaskListItemHtml
+} from 'micromark-extension-gfm-task-list-item'
+
+test('core', async () => {
+  assert.deepEqual(
+    Object.keys(await import('micromark-extension-gfm-task-list-item')).sort(),
+    ['gfmTaskListItem', 'gfmTaskListItemHtml'],
+    'should expose the public api'
+  )
+})
 
 test('markdown -> html (micromark)', () => {
   assert.deepEqual(
