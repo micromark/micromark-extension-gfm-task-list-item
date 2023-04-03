@@ -1,6 +1,6 @@
 {
   "name": "micromark-extension-gfm-task-list-item",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "micromark extension to support GFM task list items",
   "license": "MIT",
   "keywords": [
