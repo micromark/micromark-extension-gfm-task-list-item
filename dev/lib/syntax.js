@@ -9,7 +9,8 @@ import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {
   markdownLineEndingOrSpace,
-  markdownLineEnding
+  markdownLineEnding,
+  markdownSpace
 } from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
@@ -37,7 +38,16 @@ function tokenizeTasklistCheck(effects, ok, nok) {
 
   return open
 
-  /** @type {State} */
+  /**
+   * At start of task list item check.
+   *
+   * ```markdown
+   * > | * [x] y.
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function open(code) {
     assert(code === codes.leftSquareBracket, 'expected `[`')
 
@@ -58,11 +68,20 @@ function tokenizeTasklistCheck(effects, ok, nok) {
     return inside
   }
 
-  /** @type {State} */
+  /**
+   * In task list item check.
+   *
+   * ```markdown
+   * > | * [x] y.
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function inside(code) {
     // Currently we match how GH works in files.
-    // To match how GH works in comments, use `markdownSpace` (`[ \t]`) instead
-    // of `markdownLineEndingOrSpace` (`[ \t\r\n]`).
+    // To match how GH works in comments, use `markdownSpace` (`[\t ]`) instead
+    // of `markdownLineEndingOrSpace` (`[\t\n\r ]`).
     if (markdownLineEndingOrSpace(code)) {
       effects.enter('taskListCheckValueUnchecked')
       effects.consume(code)
@@ -80,16 +99,44 @@ function tokenizeTasklistCheck(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * At close of task list item check.
+   *
+   * ```markdown
+   * > | * [x] y.
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function close(code) {
     if (code === codes.rightSquareBracket) {
       effects.enter('taskListCheckMarker')
       effects.consume(code)
       effects.exit('taskListCheckMarker')
       effects.exit('taskListCheck')
-      return effects.check({tokenize: spaceThenNonSpace}, ok, nok)
+      return after
     }
 
+    return nok(code)
+  }
+
+  /**
+   * @type {State}
+   */
+  function after(code) {
+    // EOL in paragraph means there must be something else after it.
+    if (markdownLineEnding(code)) {
+      return ok(code)
+    }
+
+    // Space or tab?
+    // Check what comes after.
+    if (markdownSpace(code)) {
+      return effects.check({tokenize: spaceThenNonSpace}, ok, nok)(code)
+    }
+
+    // EOF, or non-whitespace, both wrong.
     return nok(code)
   }
 }
@@ -99,24 +146,23 @@ function tokenizeTasklistCheck(effects, ok, nok) {
  * @type {Tokenizer}
  */
 function spaceThenNonSpace(effects, ok, nok) {
-  const self = this
-
   return factorySpace(effects, after, types.whitespace)
 
-  /** @type {State} */
+  /**
+   * After whitespace, after task list item check.
+   *
+   * ```markdown
+   * > | * [x] y.
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function after(code) {
-    const tail = self.events[self.events.length - 1]
-
-    return (
-      // We either found spaces…
-      ((tail && tail[1].type === types.whitespace) ||
-        // …or it was followed by a line ending, in which case, there has to be
-        // non-whitespace after that line ending, because otherwise we’d get an
-        // EOF as the content is closed with blank lines.
-        markdownLineEnding(code)) &&
-        code !== codes.eof
-        ? ok(code)
-        : nok(code)
-    )
+    // EOF means there was nothing, so bad.
+    // EOL means there’s content after it, so good.
+    // Impossible to have more spaces.
+    // Anything else is good.
+    return code === codes.eof ? nok(code) : ok(code)
   }
 }
