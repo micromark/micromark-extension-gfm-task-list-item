@@ -1,5 +1,6 @@
 /**
  * @typedef {import('micromark-util-types').Extension} Extension
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  * @typedef {import('micromark-util-types').State} State
  */
@@ -24,7 +25,10 @@ export const gfmTaskListItem = {
   text: {[codes.leftSquareBracket]: tasklistCheck}
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeTasklistCheck(effects, ok, nok) {
   const self = this
 
@@ -86,7 +90,10 @@ function tokenizeTasklistCheck(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function spaceThenNonSpace(effects, ok, nok) {
   const self = this
 
