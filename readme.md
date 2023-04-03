@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[micromark][] extension to support GFM [task list items][].
+[micromark][] extensions to support GFM [task list items][].
 
 ## Contents
 
@@ -32,27 +32,28 @@
 
 ## What is this?
 
-This package contains extensions that add support for tasklists enabled by GFM
-to [`micromark`][micromark].
+This package contains extensions that add support for task lists as enabled by
+GFM to [`micromark`][micromark].
 It matches how task list items work on `github.com`.
 
 ## When to use this
 
-These tools are all low-level.
-In many cases, you want to use [`remark-gfm`][plugin] with remark instead.
+This project is useful when you want to support task lists in markdown.
 
-Even when you want to use `micromark`, you likely want to use
-[`micromark-extension-gfm`][micromark-extension-gfm] to support all GFM
-features.
-That extension includes this extension.
+You can use these extensions when you are working with [`micromark`][micromark].
+To support all GFM features, use
+[`micromark-extension-gfm`][micromark-extension-gfm].
 
-When working with `mdast-util-from-markdown`, you must combine this package with
-[`mdast-util-gfm-task-list-item`][util].
+When you need a syntax tree, you can combine this package with
+[`mdast-util-gfm-task-list-item`][mdast-util-gfm-task-list-item].
+
+All these packages are used [`remark-gfm`][remark-gfm], which focusses on making
+it easier to transform content by abstracting these internals away.
 
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, or 18.0+), install with [npm][]:
+In Node.js (version 14.14+), install with [npm][]:
 
 ```sh
 npm install micromark-extension-gfm-task-list-item
@@ -100,34 +101,39 @@ Yields:
 
 ## API
 
-This package exports the identifiers `gfmTaskListItem` and
-`gfmTaskListItemHtml`.
+This package exports the identifiers [`gfmTaskListItem`][api-gfm-task-list-item]
+and [`gfmTaskListItemHtml`][api-gfm-task-list-item-html].
 There is no default export.
 
-The export map supports the endorsed [`development` condition][condition].
+The export map supports the [`development` condition][development].
 Run `node --conditions development module.js` to get instrumented dev code.
 Without this condition, production code is loaded.
 
 ### `gfmTaskListItem`
 
-Syntax extension for micromark (passed in `extensions`).
+Extension for `micromark` that can be passed in `extensions`, to enable GFM
+task list items syntax ([`Extension`][micromark-extension]).
 
 ### `gfmTaskListItemHtml`
 
-HTML extension for micromark (passed in `htmlExtensions`).
+Extension for `micromark` that can be passed in `htmlExtensions` to support GFM
+task list items when serializing to HTML
+([`HtmlExtension`][micromark-html-extension]).
 
 ## Authoring
 
-When authoring markdown with task lists, it’s recommended to use a lowercase
-`x` (instead of an uppercase one) for checked items and a space (instead of a
-tab or a line ending) for unchecked items.
+It is recommended to use lowercase `x` (instead of uppercase `X`), because in
+markdown, it is more common to use lowercase in places where casing does not
+matter.
+It is also recommended to use a space (instead of a tab), as there is no benefit
+of using tabs in this case.
 
 ## HTML
 
-GFM task list items relate to the `<input>` element in HTML.
-See [*§ 4.10.5.1.15 Checkbox state (`type=checkbox`)*][html-checkbox]
+Checks relate to the `<input>` element, in the checkbox state (`type=checkbox`),
+in HTML.
+See [*§ 4.10.5.1.15 Checkbox state (`type=checkbox`)*][html-input-checkbox]
 in the HTML spec for more info.
-The structure for unchecked and checked items looks as follows:
 
 ```html
 <!--…-->
@@ -159,17 +165,16 @@ For the complete actual CSS see
 
 ## Syntax
 
-Task lists form with, roughly, the following BNF:
+Checks form with the following BNF:
 
 ```bnf
-; Note: task list items form only in the first child, after definitions, of a
-; list, if that child is a paragraph.
-; Restriction: must be follow by `whitespace` (after trimming).
-task_list_item ::= '[' ( checked | unchecked ) ']'
-checked ::= 'x' | 'X'
-unchecked ::= whitespace
-whitespace ::= '\t' | '\r\n' | '\r' | '\n' | ' '
+gfm_task_list_item_check ::= '[' (0x09 | ' ' | 'X' | 'x') ']'
 ```
+
+The check is only allowed at the start of the first paragraph, optionally
+following zero or more definitions or a blank line, in a list item.
+The check must be followed by whitespace (`[\t\n\r ]*`), which is in turn
+followed by non-whitespace.
 
 ## Types
 
@@ -178,9 +183,12 @@ It exports no additional types.
 
 ## Compatibility
 
-This package is at least compatible with all maintained versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
-It also works in Deno and modern browsers.
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 14.14+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+These extensions work with `micromark` version 3+.
 
 ## Security
 
@@ -188,12 +196,14 @@ This package is safe.
 
 ## Related
 
-*   [`syntax-tree/mdast-util-gfm-task-list-item`][util]
-    — support GFM task list items in mdast
-*   [`syntax-tree/mdast-util-gfm`][mdast-util-gfm]
-    — support GFM in mdast
-*   [`remarkjs/remark-gfm`][plugin]
-    — support GFM in remark
+*   [`micromark-extension-gfm`][micromark-extension-gfm]
+    — support all of GFM
+*   [`mdast-util-gfm-task-list-item`][mdast-util-gfm-task-list-item]
+    — support all of GFM in mdast
+*   [`mdast-util-gfm`][mdast-util-gfm]
+    — support all of GFM in mdast
+*   [`remark-gfm`][remark-gfm]
+    — support all of GFM in remark
 
 ## Contribute
 
@@ -255,20 +265,28 @@ abide by its terms.
 
 [typescript]: https://www.typescriptlang.org
 
-[condition]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
+[development]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
 
 [micromark]: https://github.com/micromark/micromark
 
+[micromark-html-extension]: https://github.com/micromark/micromark#htmlextension
+
+[micromark-extension]: https://github.com/micromark/micromark#syntaxextension
+
 [micromark-extension-gfm]: https://github.com/micromark/micromark-extension-gfm
 
-[util]: https://github.com/syntax-tree/mdast-util-gfm-task-list-item
+[mdast-util-gfm-task-list-item]: https://github.com/syntax-tree/mdast-util-gfm-task-list-item
 
 [mdast-util-gfm]: https://github.com/syntax-tree/mdast-util-gfm
 
-[plugin]: https://github.com/remarkjs/remark-gfm
+[remark-gfm]: https://github.com/remarkjs/remark-gfm
 
 [task list items]: https://github.github.com/gfm/#task-list-items-extension-
 
 [github-markdown-css]: https://github.com/sindresorhus/github-markdown-css
 
-[html-checkbox]: https://html.spec.whatwg.org/multipage/input.html#checkbox-state-\(type=checkbox\)
+[html-input-checkbox]: https://html.spec.whatwg.org/multipage/input.html#checkbox-state-\(type=checkbox\)
+
+[api-gfm-task-list-item]: #gfmtasklistitem
+
+[api-gfm-task-list-item-html]: #gfmtasklistitemhtml
