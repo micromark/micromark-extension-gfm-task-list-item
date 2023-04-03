@@ -1,7 +1,8 @@
+import assert from 'node:assert/strict'
 import {URL} from 'node:url'
 import fs from 'node:fs'
 import path from 'node:path'
-import test from 'tape'
+import test from 'node:test'
 import {micromark} from 'micromark'
 import {createGfmFixtures} from 'create-gfm-fixtures'
 import {controlPictures} from 'control-pictures'
@@ -10,23 +11,21 @@ import {
   gfmTaskListItemHtml as html
 } from '../dev/index.js'
 
-test('markdown -> html (micromark)', (t) => {
-  t.deepEqual(
+test('markdown -> html (micromark)', () => {
+  assert.deepEqual(
     micromark('*\n    [x]', {extensions: [syntax], htmlExtensions: [html]}),
     '<ul>\n<li>[x]</li>\n</ul>',
     'should not support laziness (1)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('*\n[x]', {extensions: [syntax], htmlExtensions: [html]}),
     '<ul>\n<li></li>\n</ul>\n<p>[x]</p>',
     'should not support laziness (2)'
   )
-
-  t.end()
 })
 
-test('fixtures', async (t) => {
+test('fixtures', async () => {
   const base = new URL('fixtures/', import.meta.url)
 
   await createGfmFixtures(base, {
@@ -65,11 +64,9 @@ test('fixtures', async (t) => {
     //   Text.
     // ```
     //
-    // The previous two not form inputs in comments, but do form inputs in
+    // The previous two do not form inputs in comments, but do form inputs in
     // files.
 
-    t.deepEqual(actual, expected, name)
+    assert.deepEqual(actual, expected, name)
   }
-
-  t.end()
 })
