@@ -9,35 +9,38 @@ import {
   gfmTaskListItemHtml
 } from 'micromark-extension-gfm-task-list-item'
 
-test('core', async () => {
-  assert.deepEqual(
-    Object.keys(await import('micromark-extension-gfm-task-list-item')).sort(),
-    ['gfmTaskListItem', 'gfmTaskListItemHtml'],
-    'should expose the public api'
-  )
+test('markdown -> html (micromark)', async function (t) {
+  await t.test('should expose the public api', async function () {
+    assert.deepEqual(
+      Object.keys(
+        await import('micromark-extension-gfm-task-list-item')
+      ).sort(),
+      ['gfmTaskListItem', 'gfmTaskListItemHtml']
+    )
+  })
+
+  await t.test('should not support laziness (1)', async function () {
+    assert.deepEqual(
+      micromark('*\n    [x]', {
+        extensions: [gfmTaskListItem],
+        htmlExtensions: [gfmTaskListItemHtml]
+      }),
+      '<ul>\n<li>[x]</li>\n</ul>'
+    )
+  })
+
+  await t.test('should not support laziness (2)', async function () {
+    assert.deepEqual(
+      micromark('*\n[x]', {
+        extensions: [gfmTaskListItem],
+        htmlExtensions: [gfmTaskListItemHtml]
+      }),
+      '<ul>\n<li></li>\n</ul>\n<p>[x]</p>'
+    )
+  })
 })
 
-test('markdown -> html (micromark)', () => {
-  assert.deepEqual(
-    micromark('*\n    [x]', {
-      extensions: [gfmTaskListItem],
-      htmlExtensions: [gfmTaskListItemHtml]
-    }),
-    '<ul>\n<li>[x]</li>\n</ul>',
-    'should not support laziness (1)'
-  )
-
-  assert.deepEqual(
-    micromark('*\n[x]', {
-      extensions: [gfmTaskListItem],
-      htmlExtensions: [gfmTaskListItemHtml]
-    }),
-    '<ul>\n<li></li>\n</ul>\n<p>[x]</p>',
-    'should not support laziness (2)'
-  )
-})
-
-test('fixtures', async () => {
+test('fixtures', async function (t) {
   const base = new URL('fixtures/', import.meta.url)
 
   await createGfmFixtures(base, {
@@ -47,45 +50,45 @@ test('fixtures', async () => {
 
   const files = await fs.readdir(base)
   const extname = '.md'
-  let index = -1
 
-  while (++index < files.length) {
-    const d = files[index]
-
+  for (const d of files) {
     if (!d.endsWith(extname)) {
       continue
     }
 
     const name = d.slice(0, -extname.length)
-    const input = String(await fs.readFile(new URL(d, base)))
-    const expected = String(await fs.readFile(new URL(name + '.html', base)))
-    let actual = micromark(controlPictures(input), {
-      extensions: [gfmTaskListItem],
-      htmlExtensions: [gfmTaskListItemHtml]
+
+    await t.test(name, async function () {
+      const input = String(await fs.readFile(new URL(d, base)))
+      const expected = String(await fs.readFile(new URL(name + '.html', base)))
+      let actual = micromark(controlPictures(input), {
+        extensions: [gfmTaskListItem],
+        htmlExtensions: [gfmTaskListItemHtml]
+      })
+
+      if (actual && !/\n$/.test(actual)) {
+        actual += '\n'
+      }
+
+      // GH uses `=""` on the boolean attributes, but those are dropped by
+      // `rehype-stringify`, so hide those changes.
+      actual = actual.replace(/(checked|disabled)=""/g, '$1')
+
+      // Note: GH uses a different algorithm in comments.
+      // Notably:
+      //
+      // ```markdown
+      // * [
+      //   ] With a line feed
+      //
+      //  * [ ]
+      //   Text.
+      // ```
+      //
+      // The previous two do not form inputs in comments, but do form inputs in
+      // files.
+
+      assert.deepEqual(actual, expected, name)
     })
-
-    if (actual && !/\n$/.test(actual)) {
-      actual += '\n'
-    }
-
-    // GH uses `=""` on the boolean attributes, but those are dropped by
-    // `rehype-stringify`, so hide those changes.
-    actual = actual.replace(/(checked|disabled)=""/g, '$1')
-
-    // Note: GH uses a different algorithm in comments.
-    // Notably:
-    //
-    // ```markdown
-    // * [
-    //   ] With a line feed
-    //
-    //  * [ ]
-    //   Text.
-    // ```
-    //
-    // The previous two do not form inputs in comments, but do form inputs in
-    // files.
-
-    assert.deepEqual(actual, expected, name)
   }
 })

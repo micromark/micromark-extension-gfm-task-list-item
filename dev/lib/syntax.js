@@ -8,8 +8,8 @@
 import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {
-  markdownLineEndingOrSpace,
   markdownLineEnding,
+  markdownLineEndingOrSpace,
   markdownSpace
 } from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
