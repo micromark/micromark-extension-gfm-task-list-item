@@ -22,8 +22,8 @@ const tasklistCheck = {tokenize: tokenizeTasklistCheck}
  * syntax.
  *
  * @returns {Extension}
- *   Extension for `micromark` that can be passed in `extensions`, to enable
- *   GFM task list items syntax.
+ *   Extension for `micromark` that can be passed in `htmlExtensions` to
+ *   support GFM task list items when serializing to HTML.
  */
 export function gfmTaskListItem() {
   return {
