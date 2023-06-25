@@ -62,14 +62,14 @@ npm install micromark-extension-gfm-task-list-item
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@1'
+import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@1?bundle'
+  import {gfmTaskListItem, gfmTaskListItemHtml} from 'https://esm.sh/micromark-extension-gfm-task-list-item@2?bundle'
 </script>
 ```
 
