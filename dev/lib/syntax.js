@@ -17,16 +17,18 @@ import {types} from 'micromark-util-symbol/types.js'
 
 const tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
-// To do: next major: expose function to make extension.
-
 /**
- * Extension for `micromark` that can be passed in `extensions`, to
- * enable GFM task list items syntax.
+ * Create an HTML extension for `micromark` to support GFM task list items
+ * syntax.
  *
- * @type {Extension}
+ * @returns {Extension}
+ *   Extension for `micromark` that can be passed in `extensions`, to enable
+ *   GFM task list items syntax.
  */
-export const gfmTaskListItem = {
-  text: {[codes.leftSquareBracket]: tasklistCheck}
+export function gfmTaskListItem() {
+  return {
+    text: {[codes.leftSquareBracket]: tasklistCheck}
+  }
 }
 
 /**

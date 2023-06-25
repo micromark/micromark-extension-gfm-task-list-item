@@ -22,8 +22,8 @@ test('markdown -> html (micromark)', async function (t) {
   await t.test('should not support laziness (1)', async function () {
     assert.deepEqual(
       micromark('*\n    [x]', {
-        extensions: [gfmTaskListItem],
-        htmlExtensions: [gfmTaskListItemHtml]
+        extensions: [gfmTaskListItem()],
+        htmlExtensions: [gfmTaskListItemHtml()]
       }),
       '<ul>\n<li>[x]</li>\n</ul>'
     )
@@ -32,8 +32,8 @@ test('markdown -> html (micromark)', async function (t) {
   await t.test('should not support laziness (2)', async function () {
     assert.deepEqual(
       micromark('*\n[x]', {
-        extensions: [gfmTaskListItem],
-        htmlExtensions: [gfmTaskListItemHtml]
+        extensions: [gfmTaskListItem()],
+        htmlExtensions: [gfmTaskListItemHtml()]
       }),
       '<ul>\n<li></li>\n</ul>\n<p>[x]</p>'
     )
@@ -62,8 +62,8 @@ test('fixtures', async function (t) {
       const input = String(await fs.readFile(new URL(d, base)))
       const expected = String(await fs.readFile(new URL(name + '.html', base)))
       let actual = micromark(controlPictures(input), {
-        extensions: [gfmTaskListItem],
-        htmlExtensions: [gfmTaskListItemHtml]
+        extensions: [gfmTaskListItem()],
+        htmlExtensions: [gfmTaskListItemHtml()]
       })
 
       if (actual && !/\n$/.test(actual)) {

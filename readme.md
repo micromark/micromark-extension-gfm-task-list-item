@@ -83,8 +83,8 @@ import {
 } from 'micromark-extension-gfm-task-list-item'
 
 const output = micromark('* [x] a\n* [ ] b', {
-  extensions: [gfmTaskListItem],
-  htmlExtensions: [gfmTaskListItemHtml]
+  extensions: [gfmTaskListItem()],
+  htmlExtensions: [gfmTaskListItemHtml()]
 })
 
 console.log(output)
