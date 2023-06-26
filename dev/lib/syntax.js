@@ -12,8 +12,7 @@ import {
   markdownLineEndingOrSpace,
   markdownSpace
 } from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {types} from 'micromark-util-symbol/types.js'
+import {codes, types} from 'micromark-util-symbol'
 
 const tasklistCheck = {tokenize: tokenizeTasklistCheck}
 
