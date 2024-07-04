@@ -14,7 +14,7 @@ import {
 } from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
 
-const tasklistCheck = {tokenize: tokenizeTasklistCheck}
+const tasklistCheck = {name: 'tasklistCheck', tokenize: tokenizeTasklistCheck}
 
 /**
  * Create an HTML extension for `micromark` to support GFM task list items
