@@ -20,7 +20,7 @@ test('markdown -> html (micromark)', async function (t) {
   })
 
   await t.test(
-    'should skip tasklistCheck construct if `disable.null` includes `tasklistCheck`',
+    'should skip `tasklistCheck` construct if `disable.null` includes `tasklistCheck`',
     async function () {
       assert.deepEqual(
         micromark('* [ ] foo', {

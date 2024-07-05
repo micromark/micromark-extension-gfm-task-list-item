@@ -1,8 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @import {Extension, State, TokenizeContext, Tokenizer} from 'micromark-util-types'
  */
 
 import {ok as assert} from 'devlop'
