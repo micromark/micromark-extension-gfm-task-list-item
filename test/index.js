@@ -19,6 +19,19 @@ test('markdown -> html (micromark)', async function (t) {
     )
   })
 
+  await t.test(
+    'should skip tasklistCheck construct if `disable.null` includes `tasklistCheck`',
+    async function () {
+      assert.deepEqual(
+        micromark('* [ ] foo', {
+          extensions: [gfmTaskListItem(), {disable: {null: ['tasklistCheck']}}],
+          htmlExtensions: [gfmTaskListItemHtml()]
+        }),
+        '<ul>\n<li>[ ] foo</li>\n</ul>'
+      )
+    }
+  )
+
   await t.test('should not support laziness (1)', async function () {
     assert.deepEqual(
       micromark('*\n    [x]', {
