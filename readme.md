@@ -177,8 +177,8 @@ For the complete actual CSS see
 
 Checks form with the following BNF:
 
-```bnf
-gfm_task_list_item_check ::= '[' (0x09 | ' ' | 'X' | 'x') ']'
+```abnf
+gfmTaskListItemCheck ::= "[" (%x09 / " " / "X" / "x") "]"
 ```
 
 The check is only allowed at the start of the first paragraph, optionally
