@@ -54,7 +54,9 @@ function tokenizeTasklistCheck(effects, ok, nok) {
       self.previous !== codes.eof ||
       // Exit if not in the first content that is the first child of a list
       // item.
-      !self._gfmTasklistFirstContentOfListItem
+      !self._gfmTasklistFirstContentOfListItem ||
+      // Exit if this line is lazy (the paragraph is not in the list item).
+      self.parser.lazy[self.now().line]
     ) {
       return nok(code)
     }
