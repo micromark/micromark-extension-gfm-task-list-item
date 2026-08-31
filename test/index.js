@@ -51,6 +51,19 @@ test('markdown -> html (micromark)', async function (t) {
       '<ul>\n<li></li>\n</ul>\n<p>[x]</p>'
     )
   })
+
+  await t.test(
+    'should not tokenize a task list check after an empty list item',
+    async function () {
+      assert.deepEqual(
+        micromark('*\n[ ] x', {
+          extensions: [gfmTaskListItem()],
+          htmlExtensions: [gfmTaskListItemHtml()]
+        }),
+        '<ul>\n<li></li>\n</ul>\n<p>[ ] x</p>'
+      )
+    }
+  )
 })
 
 test('fixtures', async function (t) {
